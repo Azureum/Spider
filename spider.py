@@ -1,15 +1,18 @@
-import  bip_utils, time
+import  time
+from bip_utils import Bip39MnemonicGenerator, Bip39SeedGenerator, Bip44, BitcoinPrivateKey, BitcoinPublicKey
+from bit import Key
 class Settings:
     MultiLayer=True
     CrossChain=True
     Fake = True
     Crypto = ""
+    Key = ""
     
 def ChooseInput():
     print("Welcome to spider, choose your input cryptocurrency:")
     print("[1] BTC")
     print("Enter Choice: ")
-    if input().strip() == 1:
+    if input().strip() == '1':
         Settings.Crypto == "BTC"
     else:
         print("Invalid Input")
@@ -29,6 +32,27 @@ def ChangeSettings():
         print("Invalid input. Please try again.")
         ChangeSettings()
 
+def SetupWallet():
+    print("Would you like to use a new wallet or use your private key")
+    print("[1] New Wallet [2] Private Key")
+    temp = input().strip()
+    if temp == '1':
+        if Settings.Crypto == "BTC":
+            seed_bytes = Bip39SeedGenerator(Bip39MnemonicGenerator.FromWordsNumber(12)).Generate()
+            btc_wallet = Bip44.FromSeed(seed_bytes).Purpose().CoinIndex(0).Account(0).Chain(0)
+            Settings.Key = btc_wallet.PrivateKey()
+            print(f"Your new wallet is: {btc_wallet}")
+            print(f"Your private key is: {Settings.Key}")
+    else:
+        while temp:
+            print("Enter private key:")
+            Settings.Key = input()
+            print(f"Your wallet address is: {Key(Settings.Key).address}")
+            print("[1] Yes [2] No")
+            if input().strip() == 1:
+                temp = False
+        
+    
 print("\033[91m This agreement is made between the Developer and the end-user (\"User\") regarding the use of the software named \"Spider.\" By using Spider, the User agrees to comply with all applicable laws and regulations. The User specifically agrees not to use Spider for any illegal activities. The Developer provides Spider \"as is\" without any warranties and disclaims all liability for damages resulting from its use. The Developer reserves the right to terminate this agreement and the User's access to Spider at any time for any reason. By using Spider and typing out \"I Agree\", the User acknowledges that they have read, understood, and agree to be bound by this agreement. \n")
 
 print("By typing \"I Agree\" below you gain access to the software: \033[92m")
@@ -48,5 +72,5 @@ print(r'''
 if __name__ == "__main__":
     ChooseInput()
     ChangeSettings()
-    
+    SetupWallet()
 
