@@ -8,6 +8,7 @@ class Settings:
     Fake = True
     FakePercentage = 0
     Accounts = 0
+    OutputCrypto = ""
 
     Crypto = ""
     Key = ""
@@ -88,11 +89,40 @@ def Configuration():
             print("[1] Yes [2] No")
             if input() == '1':
                     choice = False
-         
+    if Settings.CrossChain():    
+        def CrossChain():     
+            print("Please select a output Crypto (HIGHLY RECOMMEND MONERO): ")
+            print("[1] XMR [2] LTC [3] ETH [4] ZCASH [5] SOL")
+            print("Select: ")
+            choice = input()
+            if choice == "1":
+                Settings.OutputCrypto = "XMR"
+            elif choice == "2":
+                Settings.OutputCrypto = "LTC"
+            elif choice == "3":
+                Settings.OutputCrypto = "ETH"
+            elif choice == "4":
+                Settings.OutputCrypto = "ZCASH"
+            elif choice == "5":
+                Settings.OutputCrypto = "SOL"
+            else:
+                CrossChain()
             
-    if Settings.CrossChain():
+            print("Please choose an exchange: ")
+            print("[1] Fixed Float")
+            print("MAX")
+            print("None\n")
+            print("[2] Exch")
+            print("MAX")
+            print("https://kycnot.me/service/exch\n")
+            print("[3] Majestic")
+            print("MAX")
+            print("https://kycnot.me/service/majestic\n")
+            print("[4] Wizard Swap")
+            print("MAX")
+            print("https://kycnot.me/service/wizardswap\n")
+            
         
-
 
 
 
@@ -119,3 +149,4 @@ if __name__ == "__main__":
     ChangeSettings()
     SetupWallet()
     Configuration()
+
