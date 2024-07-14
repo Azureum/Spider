@@ -1,5 +1,5 @@
 import  time
-from bip_utils import Bip39MnemonicGenerator, Bip39SeedGenerator, Bip44, BitcoinPrivateKey, BitcoinPublicKey
+from bip_utils import Bip39MnemonicGenerator, Bip39SeedGenerator, Bip44, Private, BitcoinPublicKey
 from bit import Key
 class Settings:
     MultiLayer=True
@@ -9,6 +9,9 @@ class Settings:
     FakePercentage = 0
     Accounts = 0
     OutputCrypto = ""
+    OutputWallet = ""
+    ExchChoice = 0
+    TorEnable = False
 
     Crypto = ""
     Key = ""
@@ -108,22 +111,52 @@ def Configuration():
             else:
                 CrossChain()
             
-            print("Please choose an exchange: ")
-            print("[1] Fixed Float")
-            print("MAX")
-            print("None\n")
-            print("[2] Exch")
-            print("MAX")
-            print("https://kycnot.me/service/exch\n")
-            print("[3] Majestic")
-            print("MAX")
-            print("https://kycnot.me/service/majestic\n")
-            print("[4] Wizard Swap")
-            print("MAX")
-            print("https://kycnot.me/service/wizardswap\n")
+            choice = True
+            while choice:
+                print("Please enter the wallet: ")
+                Settings.OutputWallet = input()
+                print(f"Is this your wallet: {Settings.OutputWallet}?")
+                print("[1] Yes [2] No")
+                if input() == '1':
+                    choice = False
             
+            choice = True
+            while choice:
+                print("Please choose an exchange: ")
+                print("[1] Fixed Float")
+                print("MAX")
+                print("No kycnot\n")
+                print("[2] Exch")
+                print("MAX")
+                print("https://kycnot.me/service/exch\n")
+                print("[3] Majestic")
+                print("MAX")
+                print("https://kycnot.me/service/majestic\n")
+                print("[4] Wizard Swap")
+                print("MAX")
+                print("https://kycnot.me/service/wizardswap\n")
+                print("[5] Use your own exchange")
+                print("You are responsible for the exchange.\n")
+                
+                if(Settings.ExchChoice > 0 and Settings.ExchChoice <= 5):
+                    print("Please enter your number: ")
+                    Settings.ExchChoice = input()
+                print(f"Is {Settings.ExchChoice} correct?")
+                print("[1] Yes [2] No")
+                if input() == '1':
+                    choice = False
         
-
+def TorCheck():
+    print("Would you like to enable TOR requests, all requests will be routered through TOR.")
+    print("If you don't know what tor is google it, this could also cause errors + peformance drops, though it improves privacy (Highly Recommended)")
+    print("[1] Yes [2] No")
+    if input().strip() == '1':
+        TorEnable = True
+    else:
+        TorEnable = False
+        
+def Webbing():
+    print("wip")
 
 
         
@@ -149,4 +182,5 @@ if __name__ == "__main__":
     ChangeSettings()
     SetupWallet()
     Configuration()
-
+    TorCheck()
+    Webbing()
