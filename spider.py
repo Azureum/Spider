@@ -4,16 +4,20 @@ from bit import Key
 class Settings:
     MultiLayer=True
     CrossChain=True
+    
     Fake = True
+    FakePercentage = 0
+    Accounts = 0
+
     Crypto = ""
     Key = ""
     
 def ChooseInput():
     print("Welcome to spider, choose your input cryptocurrency:")
-    print("[1] BTC")
+    print("[1] btc")
     print("Enter Choice: ")
     if input().strip() == '1':
-        Settings.Crypto == "BTC"
+        Settings.Crypto == "btc"
     else:
         print("Invalid Input")
         ChooseInput()
@@ -37,7 +41,7 @@ def SetupWallet():
     print("[1] New Wallet [2] Private Key")
     temp = input().strip()
     if temp == '1':
-        if Settings.Crypto == "BTC":
+        if Settings.Crypto == "btc":
             seed_bytes = Bip39SeedGenerator(Bip39MnemonicGenerator.FromWordsNumber(12)).Generate()
             btc_wallet = Bip44.FromSeed(seed_bytes).Purpose().CoinIndex(0).Account(0).Chain(0)
             Settings.Key = btc_wallet.PrivateKey()
@@ -64,9 +68,27 @@ def SetupWallet():
                 
 def Configuration():
     if Settings.MultiLayer():
+        choice = True
         if Settings.Fake:
-            print("How this works is you send fake transactions to other active wallets which hide your trail.")
-        else:
+            while choice:
+                print("How this works is you send transactions to other active wallets which hide your trail. so as a result you will trade money for security")
+                print("Enter what percentage of your transactions will be sent off and non recoverable:")
+                Settings.FakePercentage = input()
+                print(f"Do you want {Settings.FakePercentage}% to be scattered?")
+                print(f"{float(Key(Settings.Key).get_balance(Settings.Crypto)) * Settings.FakePercentage * 0.01} will be lost.")
+                print("Are you sure?")
+                print("[1] Yes [2] No")
+                if input() == '1':
+                    choice = False
+        while choice:
+            print("How many accounts will you use?")
+            print("Enter an integer: ")
+            Settings.Accounts = int(input())
+            print("Are you sure?")
+            print("[1] Yes [2] No")
+            if input() == '1':
+                    choice = False
+         
             
     if Settings.CrossChain():
         
@@ -96,4 +118,4 @@ if __name__ == "__main__":
     ChooseInput()
     ChangeSettings()
     SetupWallet()
-
+    Configuration()
