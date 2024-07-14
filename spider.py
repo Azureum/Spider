@@ -41,8 +41,17 @@ def SetupWallet():
             seed_bytes = Bip39SeedGenerator(Bip39MnemonicGenerator.FromWordsNumber(12)).Generate()
             btc_wallet = Bip44.FromSeed(seed_bytes).Purpose().CoinIndex(0).Account(0).Chain(0)
             Settings.Key = btc_wallet.PrivateKey()
+            print("Please copy the info below and place it somewhere safe:")
             print(f"Your new wallet is: {btc_wallet}")
             print(f"Your private key is: {Settings.Key}")
+            print("Please fund the account now.")
+            while True:
+                print(f"Waiting for transaction on {btc_wallet}...")
+                time.sleep(5) 
+                if int(Key(Settings.Key).get_balance('btc')) == 0 :
+                    break
+            print("Recieved transaction")
+            print(f"Your account balance is: {Key(Settings.Key).get_balance('btc')}")
     else:
         while temp:
             print("Enter private key:")
@@ -51,6 +60,20 @@ def SetupWallet():
             print("[1] Yes [2] No")
             if input().strip() == 1:
                 temp = False
+                print(f"Your account balance is: {Key(Settings.Key).get_balance('btc')}")
+                
+def Configuration():
+    if Settings.MultiLayer():
+        if Settings.Fake:
+            print("How this works is you send fake transactions to other active wallets which hide your trail.")
+        else:
+            
+    if Settings.CrossChain():
+        
+
+
+
+
         
     
 print("\033[91m This agreement is made between the Developer and the end-user (\"User\") regarding the use of the software named \"Spider.\" By using Spider, the User agrees to comply with all applicable laws and regulations. The User specifically agrees not to use Spider for any illegal activities. The Developer provides Spider \"as is\" without any warranties and disclaims all liability for damages resulting from its use. The Developer reserves the right to terminate this agreement and the User's access to Spider at any time for any reason. By using Spider and typing out \"I Agree\", the User acknowledges that they have read, understood, and agree to be bound by this agreement. \n")
